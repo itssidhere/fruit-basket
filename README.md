@@ -7,9 +7,11 @@ A modern, interactive React application for exploring and managing fruits, built
 ### Core Functionality
 - **Dynamic Fruit List**: Browse fruits with detailed nutritional information
 - **Flexible Grouping**: Group fruits by Family, Order, or Genus
+- **Search**: Quick search for specific fruits
 - **Interactive Jar**: Add and remove fruits with real-time calorie tracking
 - **Dual View Options**: Toggle between Table and List views
 - **Bulk Actions**: Add entire groups of fruits at once
+- **Drag & Drop**: Intuitively drag fruits directly into your jar
 
 ### Technical Highlights
 - **State Management**: Efficient state handling with React Query
@@ -85,6 +87,11 @@ npm run dev
 npm run build
 ```
 
+5. Run the tests:
+
+```bash
+npm run test
+```
 
 ### 🏗 Project Structure
 

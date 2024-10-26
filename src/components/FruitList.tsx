@@ -26,7 +26,7 @@ const EXPAND_ANIMATION_DURATION = 0.3;
 const HOVER_SCALE = 1.05;
 const TAP_SCALE = 0.95;
 
-const FruitCard = ({
+export const FruitCard = ({
   fruit,
   onAddToJar,
 }: {
