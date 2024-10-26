@@ -191,7 +191,7 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
 
             {/* Pie Chart */}
             <div
-              className={`flex-shrink-0 mb-4 ${themeColors.cardBg} rounded-2xl border ${themeColors.border}
+              className={`flex-shrink-0 ${themeColors.cardBg} rounded-2xl border ${themeColors.border}
                             overflow-hidden transition-all duration-300 backdrop-blur-md
                             hover:shadow-lg ${themeColors.cardHoverBg}`}
             >
@@ -214,9 +214,17 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
                 </motion.span>
               </button>
 
-              {isPieChartVisible && (
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isPieChartVisible ? "auto" : 0,
+                  opacity: isPieChartVisible ? 1 : 0,
+                }}
+                className="overflow-hidden"
+                style={{ maxHeight: isPieChartVisible ? "300px" : 0 }}
+              >
                 <div className="px-4 pb-4">
-                  <div className="relative w-full h-48 transition-all duration-300 ease-in-out">
+                  <div className="h-48 w-full">
                     <PieChart
                       data={fruitDistribution}
                       lineWidth={40}
@@ -259,7 +267,7 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
                     ))}
                   </div>
                 </div>
-              )}
+              </motion.div>
             </div>
 
             {/* Fixed summary at bottom */}
