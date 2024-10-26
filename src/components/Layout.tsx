@@ -1,0 +1,78 @@
+import { useSpring, animated } from "react-spring";
+import { motion } from "framer-motion";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { memo } from "react";
+import { useTheme } from "../contexts/ThemeContext";
+
+interface LayoutProps {
+  leftContent: React.ReactNode;
+  rightContent: React.ReactNode;
+}
+
+export const Layout = memo(function Layout({
+  leftContent,
+  rightContent,
+}: LayoutProps) {
+  const { themeColors } = useTheme();
+
+  const [animationParent] = useAutoAnimate({
+    duration: 200,
+    easing: "ease-in-out",
+  });
+
+  const fadeIn = useSpring({
+    from: { opacity: 0, transform: "translateY(20px)" },
+    to: { opacity: 1, transform: "translateY(0)" },
+    config: { tension: 280, friction: 20 },
+  });
+
+  return (
+    <div
+      className={`fixed inset-0 bg-gradient-to-br ${themeColors.background}`}
+    >
+      <animated.div style={fadeIn} className="container mx-auto h-full p-8">
+        <div
+          ref={animationParent}
+          className="flex flex-col lg:flex-row gap-8 h-full max-h-[calc(100vh-4rem)]"
+        >
+          <motion.div
+            initial={{ x: -50 }}
+            animate={{ x: 0 }}
+            layoutId="leftContent"
+            className="flex-[2] rounded-2xl z-10 relative h-[50vh] lg:h-full"
+          >
+            <div
+              className={`absolute inset-0 p-2 ${themeColors.surface} backdrop-blur-xl
+                         border ${themeColors.border}
+                         shadow-[0_8px_30px_rgb(0,0,0,0.12)]
+                         hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)]
+                         transition-all duration-300
+                         rounded-2xl`}
+            />
+            <div className="relative z-20 h-full overflow-y-auto custom-scrollbar p-2">
+              {leftContent}
+            </div>
+          </motion.div>
+          <motion.div
+            initial={{ x: 50 }}
+            animate={{ x: 0 }}
+            layoutId="rightContent"
+            className="flex-1 rounded-2xl z-0 relative h-[60vh] lg:h-full"
+          >
+            <div
+              className={`absolute inset-0 ${themeColors.surface} backdrop-blur-xl
+                         border ${themeColors.border}
+                         shadow-[0_8px_30px_rgb(0,0,0,0.12)]
+                         hover:shadow-[0_8px_30px_rgb(0,0,0,0.16)]
+                         transition-all duration-300
+                         rounded-2xl`}
+            />
+            <div className="relative z-20 h-full p-2 overflow-y-scroll md:overflow-hidden custom-scrollbar">
+              {rightContent}
+            </div>
+          </motion.div>
+        </div>
+      </animated.div>
+    </div>
+  );
+});
