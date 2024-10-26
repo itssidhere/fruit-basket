@@ -110,7 +110,20 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
       />
       <div className="relative z-1 flex flex-col h-full p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className={`text-xl font-bold ${themeColors.text}`}>Fruit Jar</h2>
+          <div className="flex items-center gap-2">
+            <h2 className={`text-xl font-bold ${themeColors.text}`}>
+              Fruit Jar
+            </h2>
+            {fruits.length > 0 && (
+              <span
+                className={`px-2 py-0.5 text-sm rounded-full 
+                           bg-gradient-to-r ${themeColors.primary} 
+                           ${themeColors.buttonText} font-medium`}
+              >
+                {fruits.length} {fruits.length === 1 ? "item" : "items"}
+              </span>
+            )}
+          </div>
           {fruits.length > 0 && (
             <button
               onClick={handleRemoveAll}

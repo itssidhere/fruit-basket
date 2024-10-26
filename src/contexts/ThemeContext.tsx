@@ -53,8 +53,18 @@ type ThemeContextType = {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const THEME_STORAGE_KEY = "fruitjar-theme";
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<keyof typeof themes>("light");
+  const [theme, setThemeState] = useState<keyof typeof themes>(() => {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+    return (savedTheme as keyof typeof themes) || "light";
+  });
+
+  const setTheme = (newTheme: keyof typeof themes) => {
+    setThemeState(newTheme);
+    localStorage.setItem(THEME_STORAGE_KEY, newTheme);
+  };
 
   return (
     <ThemeContext.Provider

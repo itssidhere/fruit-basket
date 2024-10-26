@@ -22,11 +22,17 @@ import React from "react";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
 import { ThemeControls } from "./components/ThemeControls";
 
+const CACHE_TIME = 1000 * 60 * 60; // 1 hour
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: STALE_TIME,
+      gcTime: CACHE_TIME,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
       retry: 2,
     },
   },
@@ -91,10 +97,52 @@ class ErrorBoundary extends React.Component<
   }
 }
 
+function getInitialState() {
+  try {
+    const savedHistory = localStorage.getItem("jarHistory");
+    const savedIndex = localStorage.getItem("historyIndex");
+
+    if (!savedHistory || !savedIndex) {
+      return { history: [[]], index: 0 };
+    }
+
+    const parsedHistory = JSON.parse(savedHistory);
+    const parsedIndex = parseInt(savedIndex);
+
+    // Validate the parsed data
+    if (
+      !Array.isArray(parsedHistory) ||
+      !parsedHistory.every(Array.isArray) ||
+      typeof parsedIndex !== "number" ||
+      parsedIndex < 0 ||
+      parsedIndex >= parsedHistory.length
+    ) {
+      console.warn("Invalid saved state detected, resetting to default");
+      return { history: [[]], index: 0 };
+    }
+
+    return {
+      history: parsedHistory,
+      index: parsedIndex,
+    };
+  } catch (error) {
+    console.error("Error loading saved state:", error);
+    return { history: [[]], index: 0 };
+  }
+}
+
 function App() {
-  const [history, setHistory] = useState<JarFruit[][]>([[]]);
-  const [historyIndex, setHistoryIndex] = useState(0);
+  const { history: initialHistory, index: initialIndex } = getInitialState();
+
+  const [history, setHistory] = useState<JarFruit[][]>(initialHistory);
+  const [historyIndex, setHistoryIndex] = useState(initialIndex);
   const [playAddSound] = useSound("/sounds/pop.mp3", { volume: 0.5 });
+
+  // Save to localStorage whenever history or historyIndex changes
+  useEffect(() => {
+    localStorage.setItem("jarHistory", JSON.stringify(history));
+    localStorage.setItem("historyIndex", historyIndex.toString());
+  }, [history, historyIndex]);
 
   // Current jar fruits are derived from history and historyIndex
   const jarFruits = history[historyIndex];
@@ -185,6 +233,11 @@ function FruitApp({ jarFruits, addToHistory, onAddToJar }: FruitAppProps) {
   } = useQuery({
     queryKey: ["fruits"],
     queryFn: fetchFruits,
+    gcTime: CACHE_TIME,
+    staleTime: STALE_TIME,
+    retry: 3,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   const addAllFruitsInGroup = useCallback(
