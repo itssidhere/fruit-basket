@@ -201,8 +201,8 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
 
             {/* Pie Chart */}
             <div
-              className={`flex-shrink-0 ${themeColors.cardBg} rounded-2xl border ${themeColors.border}
-                            overflow-y-auto custom-scrollbar
+              className={`flex-shrink-0 ${themeColors.cardBg} rounded-lg border ${themeColors.border}
+                            overflow-y-auto custom-scrollbar mb-2
                             transition-all duration-300 backdrop-blur-md
                             hover:shadow-lg ${themeColors.cardHoverBg}`}
             >
