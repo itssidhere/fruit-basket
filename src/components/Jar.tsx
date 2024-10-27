@@ -1,13 +1,14 @@
 import { JarFruit } from "../types/types";
 import { useGesture } from "react-use-gesture";
 import { animated, useSpring, useTransition } from "react-spring";
-import { toast } from "react-hot-toast";
 import { fruitEmojis } from "../constants/fruitEmojis";
 import { PieChart } from "react-minimal-pie-chart";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../contexts/ThemeContext";
 import useSound from "use-sound";
+import { calculateTotalNutrition } from "../utils/calculations";
+
 interface JarProps {
   fruits: JarFruit[];
   onRemoveFromJar: (index: number) => void;
@@ -66,22 +67,19 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
     },
   });
 
-  const handleRemove = (index: number) => {
-    toast.success("Fruit removed from jar!", {
-      icon: "🗑️",
-      duration: 2000,
-    });
-    onRemoveFromJar(index);
-  };
+  // Memoize callback functions
+  const handleRemove = useCallback(
+    (index: number) => {
+      onRemoveFromJar(index);
+      playRemoveSound();
+    },
+    [onRemoveFromJar, playRemoveSound]
+  );
 
-  // Add nutritional calculations
-  const totalNutrition = fruits.reduce(
-    (acc, fruit) => ({
-      calories: acc.calories + fruit.nutritions.calories,
-      sugar: acc.sugar + fruit.nutritions.sugar,
-      fat: acc.fat + fruit.nutritions.fat,
-    }),
-    { calories: 0, sugar: 0, fat: 0 }
+  // Memoize expensive calculations
+  const memoizedNutrition = useMemo(
+    () => calculateTotalNutrition(fruits),
+    [fruits]
   );
 
   // Calculate fruit distribution for pie chart
@@ -317,18 +315,18 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
                   {[
                     {
                       icon: "🔥",
-                      value: totalNutrition.calories,
+                      value: memoizedNutrition.calories,
                       label: "calories",
                     },
                     {
                       icon: "🍯",
-                      value: totalNutrition.sugar,
+                      value: memoizedNutrition.sugar,
                       label: "sugar",
                       unit: "g",
                     },
                     {
                       icon: "🥑",
-                      value: totalNutrition.fat,
+                      value: memoizedNutrition.fat,
                       label: "fat",
                       unit: "g",
                     },

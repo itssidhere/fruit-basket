@@ -1,19 +1,26 @@
+import toast from 'react-hot-toast';
 import { fruitData } from '../mocks/fruitData';
 import { Fruit } from '../types/types';
-
+import { validateFruitArray } from '../utils/validation';
 
 export const fetchFruits = async (): Promise<Fruit[]> => {
   try {
-    const response = await fetch('https://fruit-proxy-server-1io7epjt7-project-brain.vercel.app');
+    const apiUrl = import.meta.env.VITE_API_URL;
+    if (!apiUrl) {
+      throw new Error('API URL is not defined');
+    }
+    const response = await fetch(apiUrl);
     const data = await response.json();
+    
+    if (!validateFruitArray(data)) {
+      throw new Error('Invalid data format received from API');
+    }
+    
     return data;
   } catch (error) {
     console.error('Error fetching fruits:', error);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(fruitData);
-      }, 500);
-    });
+    toast.error('Failed to fetch fruits. Using fallback data.');
+    return fruitData;
   }
 };
 
