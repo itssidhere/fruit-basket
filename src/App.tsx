@@ -136,7 +136,8 @@ function App() {
 
   const [history, setHistory] = useState<JarFruit[][]>(initialHistory);
   const [historyIndex, setHistoryIndex] = useState(initialIndex);
-  const [playAddSound] = useSound("/sounds/pop.mp3", { volume: 0.5 });
+  const [playAddSound] = useSound("/sounds/pop.wav", { volume: 0.5 });
+  const [playRemoveSound] = useSound("/sounds/whoosh.wav", { volume: 0.5 });
 
   // Save to localStorage whenever history or historyIndex changes
   useEffect(() => {
@@ -170,14 +171,16 @@ function App() {
   const undo = useCallback(() => {
     if (historyIndex > 0) {
       setHistoryIndex((prev) => prev - 1);
+      playRemoveSound(); // Add sound effect for undo
     }
-  }, [historyIndex]);
+  }, [historyIndex, playRemoveSound]);
 
   const redo = useCallback(() => {
     if (historyIndex < history.length - 1) {
       setHistoryIndex((prev) => prev + 1);
+      playAddSound(); // Add sound effect for redo
     }
-  }, [historyIndex, history.length]);
+  }, [historyIndex, history.length, playAddSound]);
 
   useEffect(() => {
     const handleKeyboard = (e: KeyboardEvent) => {
@@ -223,7 +226,7 @@ interface FruitAppProps {
 function FruitApp({ jarFruits, addToHistory, onAddToJar }: FruitAppProps) {
   const { themeColors } = useTheme();
   const [groupBy, setGroupBy] = useState<GroupByOption>("None");
-  const [playRemoveSound] = useSound("/sounds/whoosh.mp3", { volume: 0.5 });
+  const [playRemoveSound] = useSound("/sounds/whoosh.wav", { volume: 0.5 });
 
   // Query
   const {
