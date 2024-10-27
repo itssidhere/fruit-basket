@@ -2,9 +2,7 @@
 
 A modern, interactive React application for exploring and managing fruits, built with TypeScript and modern web technologies. This project demonstrates best practices in React development, state management, and user interface design.
 
-<div align="center">
-  <iframe width="560" height="315" src="https://youtu.be/uSzZcm9yQxg" title="Fruit Explorer Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
+[![Fruit Explorer Demo](http://img.youtube.com/vi/uSzZcm9yQxg/0.jpg)](http://www.youtube.com/watch?v=uSzZcm9yQxg "Fruit Explorer Demo")
 
 
 ## 🌟 Features
