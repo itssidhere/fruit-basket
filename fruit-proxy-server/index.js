@@ -3,8 +3,19 @@ const axios = require('axios');  // Add this line
 
 const app = express();
 
-
-
+// CORS middleware
+app.use((req, res, next) => {
+    const allowedOrigins = ['https://fruit-proxy-server.vercel.app', 'http://localhost:5173'];
+    const origin = req.headers.origin;
+    
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 app.get('/', async (req, res) => {
     try {
