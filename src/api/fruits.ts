@@ -4,12 +4,11 @@ import { Fruit } from '../types/types';
 
 export const fetchFruits = async (): Promise<Fruit[]> => {
   try {
-    const response = await fetch('https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/');
+    const response = await fetch('https://fruit-proxy-server-1io7epjt7-project-brain.vercel.app');
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error fetching fruits:', error);
-    // Fallback to mock data if the API fails
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(fruitData);
