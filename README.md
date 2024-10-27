@@ -4,7 +4,7 @@ A modern, interactive React application for exploring and managing fruits, built
 
 ## 🎥 Demo Video ( Click the image )
 
-[![Fruit Explorer Demo](http://img.youtube.com/vi/uSzZcm9yQxg/4.jpg)](http://www.youtube.com/watch?v=uSzZcm9yQxg "Fruit Explorer Demo")
+[![Fruit Explorer Demo](http://img.youtube.com/vi/uSzZcm9yQxg/0.jpg)](http://www.youtube.com/watch?v=uSzZcm9yQxg "Fruit Explorer Demo")
 
 
 ## 🌟 Features
