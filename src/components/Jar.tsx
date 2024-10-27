@@ -204,7 +204,7 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
               className={`flex-shrink-0 ${themeColors.cardBg} rounded-lg border ${themeColors.border}
                             overflow-y-auto custom-scrollbar mb-2
                             transition-all duration-300 backdrop-blur-md
-                            hover:shadow-lg ${themeColors.cardHoverBg}`}
+                            ${themeColors.cardHoverBg}`}
             >
               <button
                 onClick={() => setIsPieChartVisible(!isPieChartVisible)}
@@ -340,7 +340,7 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
                       transition={{ delay: index * 0.1 }}
                       className={`text-center p-3 ${themeColors.cardBg}
                                rounded-xl border ${themeColors.border} backdrop-blur-sm
-                               hover:shadow-lg hover:scale-105 transition-all duration-300`}
+                               transition-all duration-300`}
                     >
                       <div
                         className="text-2xl mb-1 transform hover:scale-110 
