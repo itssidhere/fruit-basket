@@ -33,7 +33,7 @@ export const Layout = memo(function Layout({
       <animated.div style={fadeIn} className="container mx-auto h-full p-8">
         <div
           ref={animationParent}
-          className="flex flex-col lg:flex-row gap-8 h-full max-h-[calc(100vh-4rem)]"
+          className="flex flex-col lg:flex-row gap-8 h-full"
         >
           <motion.div
             initial={{ x: -50 }}
