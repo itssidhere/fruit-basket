@@ -202,7 +202,8 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
             {/* Pie Chart */}
             <div
               className={`flex-shrink-0 ${themeColors.cardBg} rounded-2xl border ${themeColors.border}
-                            overflow-hidden transition-all duration-300 backdrop-blur-md
+                            overflow-y-auto custom-scrollbar
+                            transition-all duration-300 backdrop-blur-md
                             hover:shadow-lg ${themeColors.cardHoverBg}`}
             >
               <button
@@ -230,7 +231,7 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
                   height: isPieChartVisible ? "auto" : 0,
                   opacity: isPieChartVisible ? 1 : 0,
                 }}
-                className="overflow-hidden"
+                className="overflow-y-auto custom-scrollbar"
                 style={{ maxHeight: isPieChartVisible ? "300px" : 0 }}
               >
                 <div className="px-4 pb-4">
