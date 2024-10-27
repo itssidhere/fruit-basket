@@ -1,9 +1,12 @@
 import { fruitData } from '../mocks/fruitData';
 import { Fruit } from '../types/types';
 
-// Define a proper type for our fruit data
 
 export const fetchFruits = async (): Promise<Fruit[]> => {
+  // get this https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/
+  const response = await fetch('https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/');
+  const data = await response.json();
+  return data;
   // Simulate API delay
   return new Promise((resolve) => {
     setTimeout(() => {
