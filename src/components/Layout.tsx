@@ -57,7 +57,7 @@ export const Layout = memo(function Layout({
             initial={{ x: 50 }}
             animate={{ x: 0 }}
             layoutId="rightContent"
-            className="flex-1 rounded-2xl z-0 relative h-[60vh] lg:h-full"
+            className="flex-1 rounded-2xl z-0 relative h-[50vh] lg:h-full"
           >
             <div
               className={`absolute inset-0 ${themeColors.surface} backdrop-blur-xl

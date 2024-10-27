@@ -4,7 +4,7 @@ import { animated, useSpring, useTransition } from "react-spring";
 import { toast } from "react-hot-toast";
 import { fruitEmojis } from "../constants/fruitEmojis";
 import { PieChart } from "react-minimal-pie-chart";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../contexts/ThemeContext";
 import useSound from "use-sound";
@@ -17,6 +17,13 @@ interface JarProps {
 export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
   const { themeColors } = useTheme();
   const [playRemoveSound] = useSound("/sounds/whoosh.mp3", { volume: 0.5 });
+  const [isJarSummaryVisible, setIsJarSummaryVisible] = useState(false);
+
+  // Check if mobile on mount
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setIsJarSummaryVisible(!isMobile);
+  }, []);
 
   // Group fruits by name and count occurrences
   const groupedFruits = fruits.reduce<
@@ -275,61 +282,85 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
 
             {/* Fixed summary at bottom */}
             <div
-              className={`flex-shrink-0 p-4 ${themeColors.cardBg} rounded-lg border ${themeColors.border}`}
+              className={`flex-shrink-0 ${themeColors.cardBg} rounded-lg border ${themeColors.border}`}
             >
-              <h3 className={`text-sm font-semibold ${themeColors.text} mb-3`}>
-                Jar Summary
-              </h3>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-3 gap-4"
+              <button
+                onClick={() => setIsJarSummaryVisible(!isJarSummaryVisible)}
+                className={`w-full p-4 flex items-center justify-between 
+                           ${themeColors.surfaceHover} transition-colors group`}
               >
-                {[
-                  {
-                    icon: "🔥",
-                    value: totalNutrition.calories,
-                    label: "calories",
-                  },
-                  {
-                    icon: "🍯",
-                    value: totalNutrition.sugar,
-                    label: "sugar",
-                    unit: "g",
-                  },
-                  {
-                    icon: "🥑",
-                    value: totalNutrition.fat,
-                    label: "fat",
-                    unit: "g",
-                  },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`text-center p-3 ${themeColors.cardBg}
+                <h3 className={`text-sm font-semibold ${themeColors.text}`}>
+                  Jar Summary
+                </h3>
+                <motion.span
+                  animate={{ rotate: isJarSummaryVisible ? 180 : 0 }}
+                  className="text-indigo-500 opacity-50 group-hover:opacity-100 md:hidden"
+                >
+                  ▼
+                </motion.span>
+              </button>
+
+              <motion.div
+                initial={false}
+                animate={{
+                  height: isJarSummaryVisible ? "auto" : 0,
+                  opacity: isJarSummaryVisible ? 1 : 0,
+                }}
+                className="overflow-hidden"
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="grid grid-cols-3 gap-4 p-4"
+                >
+                  {[
+                    {
+                      icon: "🔥",
+                      value: totalNutrition.calories,
+                      label: "calories",
+                    },
+                    {
+                      icon: "🍯",
+                      value: totalNutrition.sugar,
+                      label: "sugar",
+                      unit: "g",
+                    },
+                    {
+                      icon: "🥑",
+                      value: totalNutrition.fat,
+                      label: "fat",
+                      unit: "g",
+                    },
+                  ].map((item, index) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ scale: 0.9, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`text-center p-3 ${themeColors.cardBg}
                                rounded-xl border ${themeColors.border} backdrop-blur-sm
                                hover:shadow-lg hover:scale-105 transition-all duration-300`}
-                  >
-                    <div
-                      className="text-2xl mb-1 transform hover:scale-110 
+                    >
+                      <div
+                        className="text-2xl mb-1 transform hover:scale-110 
                                     transition-transform duration-300"
-                    >
-                      {item.icon}
-                    </div>
-                    <div className={`text-sm font-medium ${themeColors.text}`}>
-                      {item.value.toFixed(1)}
-                      {item.unit || ""}
-                    </div>
-                    <div
-                      className={`text-xs ${themeColors.secondaryText} font-light`}
-                    >
-                      {item.label}
-                    </div>
-                  </motion.div>
-                ))}
+                      >
+                        {item.icon}
+                      </div>
+                      <div
+                        className={`text-sm font-medium ${themeColors.text}`}
+                      >
+                        {item.value.toFixed(1)}
+                        {item.unit || ""}
+                      </div>
+                      <div
+                        className={`text-xs ${themeColors.secondaryText} font-light`}
+                      >
+                        {item.label}
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </motion.div>
             </div>
           </>
