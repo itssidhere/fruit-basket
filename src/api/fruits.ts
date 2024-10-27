@@ -3,16 +3,19 @@ import { Fruit } from '../types/types';
 
 
 export const fetchFruits = async (): Promise<Fruit[]> => {
-  // get this https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/
-  const response = await fetch('https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/');
-  const data = await response.json();
-  return data;
-  // Simulate API delay
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(fruitData);
-    }, 500);
-  });
+  try {
+    const response = await fetch('https://wcz3qr33kmjvzotdqt65efniv40kokon.lambda-url.us-east-2.on.aws/');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching fruits:', error);
+    // Fallback to mock data if the API fails
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(fruitData);
+      }, 500);
+    });
+  }
 };
 
 // Additional helper functions
