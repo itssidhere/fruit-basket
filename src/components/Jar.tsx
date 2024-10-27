@@ -145,7 +145,10 @@ export function Jar({ fruits = [], onRemoveFromJar, onRemoveAll }: JarProps) {
           <>
             <div className="flex-1 overflow-y-auto mb-4 pr-2 space-y-2 custom-scrollbar">
               {transitions((style, [fruitName, fruitGroup]) => (
-                <animated.div style={style} className="overflow-hidden group">
+                <animated.div
+                  style={style}
+                  className="overflow-hidden group pt-1 pb-1"
+                >
                   <div
                     className={`flex items-center justify-between p-3 border rounded-lg 
                              ${themeColors.cardBg} backdrop-blur-sm shadow-sm 
