@@ -2,9 +2,7 @@
 
 A modern, interactive React application for exploring and managing fruits, built with TypeScript and modern web technologies. This project demonstrates best practices in React development, state management, and user interface design.
 
-<video width="100%" controls>
-  <source src="public/demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
+<video src="public/demo.mp4">
 </video>
 
 ## 🌟 Features
