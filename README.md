@@ -138,6 +138,3 @@ src/
    - Toggle between light and dark modes
    - Theme preference is saved across sessions
 
-
-
-
